@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Clear Database</title>
+    <style>
+         body {
+    color: white;
+    background:black url(http://fc01.deviantart.net/fs71/f/2012/160/b/9/stars_by_paulinemoss-d52un4e.jpg);
+    animation: stars 205s linear alternate;
+    text-align: center;
+    align-items: center;
+    margin-top: 80px;
+  }
+  @keyframes stars {
+    0% { background-position:0 0 }
+    100% { background-position:0 100% }
+  }
+    </style>
+</head>
+<body>
+    <h1>Adios Amigos!</h1>
+    
+    <p>Are you sure you want to clear the database? This action is irreversible and will delete all saved locations.</p>
+    
+    <form method="POST" action="/clear_database_html">
+        <input type="submit" value="Clear Database">
+    </form>
+    
+    <a href="/">Back to Main Menu</a>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Start Tracking</title>
+</head>
+<body>
+    <h1>Start Tracking</h1>
+    
+    <p>Your current coordinates:</p>
+    <p>Latitude: {{ current_lat }}</p>
+    <p>Longitude: {{ current_lon }}</p>
+    
+    <hr>
+    
+    <h2>Nearby Locations</h2>
+    <ul>
+        {% for location_name, notifications in nearby_locations %}
+            <li>
+                <strong>{{ location_name }}</strong>
+                <br>Notifications: {{ notifications }}
+            </li>
+        {% endfor %}
+    </ul>
+    
+    <form method="POST" action="/start_tracking">
+    
+    </form>
+</body>
+</html>

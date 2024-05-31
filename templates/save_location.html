@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Save New Location</title>
+    <style>
+        body {
+    color: white;
+    background:black url(http://fc01.deviantart.net/fs71/f/2012/160/b/9/stars_by_paulinemoss-d52un4e.jpg);
+    animation: stars 205s linear alternate;
+    text-align: center;
+    align-items: center;
+    margin-top: 80px;
+  }
+  @keyframes stars {
+    0% { background-position:0 0 }
+    100% { background-position:0 100% }
+  }
+
+  .textborder
+  {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px; /* Set a fixed width for the container if needed */
+    padding: 20px;
+    border: 1px solid #ccc;
+    
+    text-align: left; /* Left-align the text content */
+
+  }
+  .textborder label {
+    display: block;
+    margin-bottom: 10px;
+}
+ .textborder input {
+    width: 100%;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    margin-bottom: 10px;
+}
+#savebtn
+{
+    position: absolute;
+    top:90%;
+    margin-left: -50px;
+    
+}
+#savebtn2
+{
+    position: absolute;
+    top:95%;
+    margin-left: -50px;
+    
+    
+}
+    </style>
+</head>
+<body>
+    <h1 class="heading">Save New Location</h1>
+    
+    <form method="POST" action="/save_location_html">
+        <p>From the Open Map Button select location coodinates to save</p>
+        <button onclick="window.location.href='/from_MAP'">Open Map</button>
+        <br><br>
+        <div class="textborder">
+
+            <label for="location_id">Location ID:</label>
+            <input type="text" id="location_id" name="location_id" required><br><br>
+        
+            <label for="location_name">Location Name:</label>
+            <input type="text" id="location_name" name="location_name" required><br><br>
+        
+            <label for="location_address">Location Address:</label>
+            <input type="text" id="location_address" name="location_address" required><br><br>
+        
+     
+            <label for="location_notifications">Location Notifications:</label>
+            <input type="text" id="location_notifications" name="location_notifications" required><br><br>
+        </div>
+            
+        <input id="savebtn" type="submit" value="Save Location">
+    </form>
+    
+    <a id="savebtn2" href="/">Back to Main Menu</a>
+</body>
+</html>

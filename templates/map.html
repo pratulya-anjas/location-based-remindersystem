@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mapbox Map</title>
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.css" rel="stylesheet" />
+    <style>
+        body {
+            margin: 10;
+            padding: 10;
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+            height: 80%;
+        }
+          
+          #latitude{
+            position: absolute;
+            top: 10px;
+            left: 10px;
+        }
+           #longitude {
+            position: absolute;
+            top: 30px;
+            left: 10px;
+           }
+           #doneButton {
+            position: absolute;
+            bottom: 20px;
+            left: 10px;
+            background-color: #0074d9;
+            color: white;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <p>Latitude: <span id="latitude"></span></p>
+    <p>Longitude: <span id="longitude"></span></p>
+    <div id="doneButton" onclick="location.href='/done'">
+        Done
+    </div>
+  <script>
+        mapboxgl.accessToken = 'pk.eyJ1IjoiYXNod2luNzA4NyIsImEiOiJjbG9rZDM1cXcyYWU5MnFuMHNmZjlhcjh1In0.hcAobJCiE_DxM-SV3pnfIw';
+
+        var map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/streets-v11',
+            center: [77.8620,20.8735],
+            zoom: 4
+        });
+
+        var marker = new mapboxgl.Marker()
+            .setLngLat([-74.5, 40]) 
+            .addTo(map);
+
+        map.on('click', function (e) {
+            var coordinates = e.lngLat;
+            document.getElementById('latitude').textContent = coordinates.lat;
+            document.getElementById('longitude').textContent = coordinates.lng;
+            marker.setLngLat(coordinates);
+        });
+        map.on('click', function (e) {
+        var coordinates = e.lngLat;
+        document.getElementById('latitude').textContent = coordinates.lat;
+        document.getElementById('longitude').textContent = coordinates.lng;
+        marker.setLngLat(coordinates);
+
+      
+        fetch('/update-location', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ latitude: coordinates.lat, longitude: coordinates.lng }),
+        });
+
+        document.getElementById('doneButton').addEventListener('click', function () {
+        
+            var latitude = parseFloat(document.getElementById('latitude').textContent);
+            var longitude = parseFloat(document.getElementById('longitude').textContent);
+
+         
+            var data = {
+                latitude: latitude,
+                longitude: longitude
+            };
+
+            
+            fetch('/send-coordinates', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            }).then(response => {
+                if (response.ok) {
+                   
+                } else {
+                    
+                }
+            }).catch(error => {
+                console.error(error);
+            });
+        });
+    });
+    </script>
+</body>
+</html>

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Main Menu</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: space-between;
+            margin: 0;
+            padding: 0;
+        }
+        #map-container {
+            flex: 1;
+            height: 100vh;
+            position: relative;
+        }
+        #map {
+            width: 50%; 
+            height: 100%; 
+        }
+        #menu-container {
+        max-width: 400px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f0f0f0;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        text-align: center;
+        font-family: Arial, sans-serif;
+    }
+
+    h1 {
+        font-size: 24px;
+        color: #333;
+    }
+
+    h2 {
+        font-size: 18px;
+        color: #555;
+    }
+
+    h3 {
+        font-size: 16px;
+        color: #777;
+    }
+
+    p {
+        font-size: 14px;
+        color: #666;
+    }
+
+    ul {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    li {
+        margin: 10px 0;
+    }
+
+    li strong {
+        font-weight: bold;
+    }
+
+    form {
+        margin: 20px 0;
+    }
+
+    input[type="submit"] {
+        background-color: #007bff;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    button {
+        background-color: #333;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: #555;
+    }
+    </style>
+</head>
+<body>
+    <div id="menu-container">
+        <h1>Main Menu</h1>
+
+        <h2>Current Information</h2>
+        <p>Your current coordinates:</p>
+        <p>Latitude: {{ current_lat }}</p>
+        <p>Longitude: {{ current_lon }}</p>
+        
+        <hr>
+        
+        <h3>Nearby Locations</h3>
+        <ul>
+            {% for location_name, notifications in nearby_locations %}
+                <li>
+                    <strong>{{ location_name }}</strong>
+                    <br>Notifications: {{ notifications }}
+                </li>
+            {% endfor %}
+        </ul>
+        
+        <form method="POST" action="/start_tracking">
+            <input type="submit" value="View Result">
+        </form>
+       <br><br>
+
+        <button onclick="window.location.href='/save_location_html'">Save New Location</button>
+        <br><br>
+
+        <button onclick="window.location.href='/view_locations'">View Locations</button>
+        <br><br>
+
+        <button onclick="window.location.href='/clear_database_html'">Clear Database</button>
+        <br><br>
+
+        <!-- <button onclick="window.location.href='/exit'">Exit</button> -->
+    </div>
+    <div id="map-container">
+        <h2>Map</h2>
+
+        <meta charset="utf-8">
+        <title>Locate the user</title>
+        <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+        <link href="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css" rel="stylesheet">
+        <script src="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js"></script>
+        <style>
+            body { margin: 0; padding: 0; }
+            #map { position: absolute; top: 0; bottom: 0; width: 100%; }
+        </style>
+      
+     <body>
+       <div id="map"></div>
+
+        <script>
+            mapboxgl.accessToken = 'pk.eyJ1IjoiYXNod2luNzA4NyIsImEiOiJjbG9rY3U4cmMyMTF3MmtuMGhkZzJhcmplIn0.TnnNEY-j-GGnuGjuiYYlpA';
+            const map = new mapboxgl.Map({
+                container: 'map', 
+               
+                style: 'mapbox://styles/mapbox/streets-v12',
+                center: [-24, 42], 
+                zoom: 1 
+            });
+        
+           
+            function sendLocationToFlask(latitude, longitude) {
+                
+                const data = {
+                    latitude: latitude,
+                    longitude: longitude
+                };
+        
+                
+                fetch('/get_live', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then(response => {
+                    
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+            }
+        
+            
+            map.addControl(
+                new mapboxgl.GeolocateControl({
+                    positionOptions: {
+                        enableHighAccuracy: true
+                    },
+                   
+                    trackUserLocation: true,
+                    showUserHeading: true
+                })
+                .on('geolocate', (e) => {
+                    const latitude = e.coords.latitude;
+                    const longitude = e.coords.longitude;
+                    sendLocationToFlask(latitude, longitude);
+                })
+            );
+        </script>
+    </div>
+</body>
+</html>
